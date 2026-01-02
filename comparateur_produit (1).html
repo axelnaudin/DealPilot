@@ -7,89 +7,21 @@
   <meta name="description" content="DealPilot – Comparez automatiquement les meilleures offres et trouvez le meilleur prix pour vos produits préférés sur Amazon, Fnac, Cdiscount et Boulanger. Achetez malin et économisez facilement !">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* ===== Reset & Font ===== */
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:'Roboto', sans-serif; background:#0b1020; color:#e5e7eb; }
-
-    /* ===== Header ===== */
-    header {
-      background: linear-gradient(135deg,#1e3a8a,#2563eb);
-      padding:50px 20px;
-      text-align:center;
-      border-bottom-left-radius:16px;
-      border-bottom-right-radius:16px;
-    }
+    body { margin:0; font-family:'Roboto',sans-serif; background:#0b1020; color:#e5e7eb; }
+    header { background:linear-gradient(135deg,#1e3a8a,#2563eb); padding:50px 20px; text-align:center; border-bottom-left-radius:16px; border-bottom-right-radius:16px; }
     header h1 { margin:0; font-size:2.8em; font-weight:700; }
     header p { font-size:1.2em; margin-top:8px; color:#cbd5e1; }
-
-    /* ===== Container ===== */
     .container { max-width:1100px; margin:auto; padding:40px 20px; }
-
-    /* ===== Card ===== */
-    .card {
-      background:#121827;
-      padding:30px;
-      border-radius:16px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.4);
-    }
-
-    /* ===== Input & Button ===== */
-    input {
-      width:100%;
-      padding:15px;
-      border-radius:10px;
-      border:none;
-      margin-top:10px;
-      font-size:1em;
-      background:#1f2937;
-      color:#e5e7eb;
-    }
-    button {
-      width:100%;
-      padding:15px;
-      margin-top:10px;
-      border:none;
-      border-radius:10px;
-      font-size:1em;
-      font-weight:700;
-      background:#ef4444; /* rouge vif */
-      color:white;
-      cursor:pointer;
-      transition:0.3s;
-    }
-    button:hover {
-      background:#dc2626;
-      transform:scale(1.03);
-    }
-
-    /* ===== Table ===== */
-    table {
-      width:100%;
-      border-collapse:collapse;
-      margin-top:25px;
-      border-radius:10px;
-      overflow:hidden;
-      background:#1f2937;
-    }
-    th, td {
-      padding:14px;
-      text-align:center;
-      border-bottom:1px solid #374151;
-      font-size:0.95em;
-    }
+    .card { background:#121827; padding:30px; border-radius:16px; box-shadow:0 8px 25px rgba(0,0,0,0.4); }
+    input { width:100%; padding:15px; border-radius:10px; border:none; margin-top:10px; font-size:1em; background:#1f2937; color:#e5e7eb; }
+    button { width:100%; padding:15px; margin-top:10px; border:none; border-radius:10px; font-size:1em; font-weight:700; background:#ef4444; color:white; cursor:pointer; transition:0.3s; }
+    button:hover { background:#dc2626; transform:scale(1.03); }
+    table { width:100%; border-collapse:collapse; margin-top:25px; border-radius:10px; overflow:hidden; background:#1f2937; }
+    th, td { padding:14px; text-align:center; border-bottom:1px solid #374151; font-size:0.95em; }
     th { background:#1e40af; color:#fff; font-weight:700; }
     tr:hover { background:#374151; }
     .best { background:#111827; border-left:5px solid #ef4444; font-weight:700; }
-
-    /* ===== Footer ===== */
-    footer {
-      text-align:center;
-      padding:25px;
-      font-size:0.9em;
-      color:#94a3b8;
-    }
-
-    /* ===== Responsive ===== */
+    footer { text-align:center; padding:25px; font-size:0.9em; color:#94a3b8; }
     @media(max-width:768px) {
       header h1 { font-size:2em; }
       input, button { font-size:0.95em; padding:12px; }
@@ -139,6 +71,13 @@ const affiliateLinks = {
 };
 
 function compare() {
+  const productName = document.getElementById("product").value.trim();
+  if(!productName) {
+    alert("Veuillez entrer un produit à comparer !");
+    return;
+  }
+
+  // Données simulées pour exemple
   const offers = [
     { site:'Amazon', price:899, shipping:0, rating:4.7 },
     { site:'Fnac', price:929, shipping:5, rating:4.6 },
@@ -159,7 +98,6 @@ function compare() {
   offers.forEach((o,i)=>{
     const tr = document.createElement("tr");
     if(i===0) tr.classList.add("best");
-
     tr.innerHTML = `
       <td>${o.site}</td>
       <td>${o.price} €</td>
@@ -167,9 +105,7 @@ function compare() {
       <td>${o.rating}/5</td>
       <td>${o.score.toFixed(2)}</td>
       <td>
-        <button onclick="window.open('${o.link}', '_blank')">
-          Voir l'offre
-        </button>
+        <button onclick="window.open('${o.link}', '_blank')">Voir l'offre</button>
       </td>
     `;
     tbody.appendChild(tr);
