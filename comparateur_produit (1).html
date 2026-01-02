@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>DealPilot – Comparateur de prix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin:0; font-family:Arial; background:#0b1020; color:#e5e7eb; }
+    header { background:linear-gradient(135deg,#2563eb,#1e40af); padding:40px; text-align:center; }
+    h1 { margin:0; }
+    .container { max-width:1100px; margin:auto; padding:40px 20px; }
+    .card { background:#020617; padding:25px; border-radius:16px; margin-bottom:30px; }
+    input, button { width:100%; padding:14px; border-radius:10px; border:none; margin-top:10px; }
+    button { background:#2563eb; color:white; cursor:pointer; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th, td { padding:12px; border-bottom:1px solid #1e293b; text-align:center; }
+    .best { background:rgba(34,197,94,.15); border-left:5px solid #22c55e; }
+    footer { text-align:center; padding:30px; opacity:.6; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🚀 DealPilot</h1>
+  <p>Le comparateur intelligent pour acheter au meilleur prix</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>🔍 Comparer un produit</h2>
+    <input id="product" placeholder="Ex: iPhone 15" />
+    <button onclick="compare()">Comparer</button>
+
+    <table id="table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Site</th>
+          <th>Prix</th>
+          <th>Livraison</th>
+          <th>Note</th>
+          <th>Score</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  DealPilot © 2026 — Monétisé par affiliation
+</footer>
+
+<script>
+const affiliateLinks = {
+  Amazon: "https://www.amazon.fr/?tag=axelnaudin-21",
+  Fnac: "https://www.fnac.com/?partner=axelnaudin-21",
+  Cdiscount: "https://www.cdiscount.com/?cid=axelnaudin-21",
+  Boulanger: "https://www.boulanger.com"
+};
+
+function compare() {
+  const offers = [
+    { site:'Amazon', price:899, shipping:0, rating:4.7 },
+    { site:'Fnac', price:929, shipping:5, rating:4.6 },
+    { site:'Cdiscount', price:879, shipping:8, rating:4.2 },
+    { site:'Boulanger', price:915, shipping:0, rating:4.4 }
+  ];
+
+  offers.forEach(o => {
+    o.score = (o.rating * 2) - (o.price / 500) - (o.shipping / 10);
+    o.link = affiliateLinks[o.site];
+  });
+
+  offers.sort((a,b)=>b.score-a.score);
+
+  const tbody = document.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  offers.forEach((o,i)=>{
+    const tr = document.createElement("tr");
+    if(i===0) tr.classList.add("best");
+
+    tr.innerHTML = `
+      <td>${o.site}</td>
+      <td>${o.price} €</td>
+      <td>${o.shipping===0?'Gratuite':o.shipping+' €'}</td>
+      <td>${o.rating}/5</td>
+      <td>${o.score.toFixed(2)}</td>
+      <td>
+        <button onclick="window.open('${o.link}', '_blank')">
+          Voir l'offre
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("table").style.display = "table";
+}
+</script>
+
+</body>
+</html>
